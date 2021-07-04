@@ -140,3 +140,78 @@ const originArr = Array.from({ length: 10 }, () => {
   return Math.floor(Math.random() * 1000);
 });
 console.log(deepCopy(originArr), originArr.sortArray());
+
+/*
+  https://leetcode-cn.com/problems/set-mismatch/
+  错误的集合
+*/
+function findErrorNums(nums) {
+  // 创建一个map 用来记录每个字符出现的次数
+  const hashMap = new Map();
+  let res = [0, 0];
+  for (let num of nums) {
+    hashMap.set(num, hashMap.has(num) ? hashMap.get(num) + 1 : 1);
+  }
+  for (let i = 0; i < nums.length; i++) {
+    // 结果中应该存在的数字 num
+    const num = i + 1;
+    const count = hashMap.get(num) || 0;
+    // 如果没有出现则说明这个就是要找的
+    if (count === 0) {
+      res[1] = num;
+      // 如果出现了两次，说明这个就是错误的重复的数字
+    } else if (count === 2) {
+      res[0] = num;
+    }
+  }
+  return res;
+}
+
+const xxx = findErrorNums([3, 2, 2]);
+
+console.log(xxx, 'xxx');
+
+/*
+找到需要补充粉笔的学生编号
+https://leetcode-cn.com/problems/find-the-student-that-will-replace-the-chalk/submissions/
+ */
+
+function chalkReplacer(chalk, k) {
+  // 计算出单次循环完整需要的粉笔数量
+  const total = chalk.reduce((prev, current) => prev + current, 0);
+  // 取余的数量就是需要补充前最后一次剩余的粉笔数量
+  let rest = k % total;
+  // 模拟最后一次的情况 判断比较是哪一个index需要去补充
+  for (let i = 0; i < chalk.length; i++) {
+    rest -= chalk[i];
+    if (rest < 0) {
+      return i;
+    }
+  }
+}
+
+/*
+Q4. 获得指定下标的斐波那契数
+*/
+function fibonacci(num) {
+  // 递归终结条件
+  if (num === 0 || num === 1) {
+    return 1;
+  } else {
+    // 递归开始
+    return fibonacci(num - 1) + fibonacci(num - 2);
+  }
+}
+
+/*
+  斐波那契数列前num项
+ */
+function getFibonacci(num) {
+  // 创建指定长度的Array
+  const res = Array.from({ length: num - 1 });
+  // 通过获取指定位数的斐波那契函数来获取
+  for (let i = 0; i < num; i++) {
+    res[i] = fibonacci(i);
+  }
+  return res;
+}

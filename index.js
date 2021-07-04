@@ -215,3 +215,63 @@ function getFibonacci(num) {
   }
   return res;
 }
+
+/*
+二维数组中的查找
+ */
+function search2D(arr, target) {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr[i].length; j++) {
+      if (arr[i][j] === target) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+console.log(
+  search2D(
+    [
+      [1, 2, 3],
+      [10000, 21123, 2132],
+      [123, 32, 213, 4891],
+    ],
+    21123
+  )
+);
+
+/*
+ 替换空格
+*/
+function replaceEmpty(str) {
+  return str.replace(/\s/g, '%20');
+}
+
+/*
+  验证一个数是否是素数
+ */
+
+function isPrime(num) {
+  if (num === 2) {
+    return true;
+  }
+  const max = Math.ceil(Math.sqrt(num));
+  for (let i = 2; i <= max; i++) {
+    if (num % i === 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+console.log(
+  Array.from({ length: 100 }, (v, k) => k + 1)
+    .slice(1)
+    .map((item) => ({
+      num: item,
+      isPrime: isPrime(item),
+    }))
+    .filter((it) => it.isPrime)
+    .map((it) => it.num)
+);

@@ -305,7 +305,7 @@ class TreeMethods {
     let currentNode = node;
     // 将根节点加入队列
     queue.unshift(node);
-
+    // 核心算法在于 要按顺序将左节点与右节点依次打入队列 这样才能按顺序出队 完成按层级顺序排列
     while (queue.length) {
       // 设置当前节点 并把队列shift出队列
       currentNode = queue.shift();
@@ -317,20 +317,56 @@ class TreeMethods {
         queue.push(currentNode.left);
       }
       if (currentNode.right !== null) {
+        // 将右节点塞入队列
         queue.push(currentNode.right);
       }
     }
     return res;
   }
   // 前序遍历 先根结点 - 左子树 - 右子树
-  preOrderRec(node = this.root) {}
+  preorderRec(node = this.root) {
+    // 结果集
+    let res = [];
+    if (node !== null) {
+      res.push(node.key); // 访问当前节点的根（第一次的时候 node.key就是根节点的值）
+      res.push(...this.preorderRec(node.left)); // 前序遍历左子树
+      res.push(...this.preorderRec(node.right)); // 前序遍历右子树
+    }
+    return res;
+  }
+  // 中序遍历 先左子树 - 根节点 - 右子树
+  inorderRec(node = this.root) {
+    // 结果集
+    let res = [];
+    if (node !== null) {
+      res.push(...this.inorderRec(node.left));
+      res.push(node.key);
+      res.push(...this.inorderRec(node.right));
+    }
+    return res;
+  }
+  // 后序遍历 先左子树 - 右子树 - 根节点
+  postorderRec(node = this.root) {
+    // 结果集
+    let res = [];
+    if (node !== null) {
+      res.push(...this.postorderRec(node.left));
+      res.push(...this.postorderRec(node.right));
+      res.push(node.key);
+    }
+    return res;
+  }
+}
+
+class TreeMethods2 {
+  levelOrder(node = this.root) {}
 }
 
 /**
  *
  * BST基类 二叉搜索树（BST）。它是二叉树的一种，但是只允许你在左侧节点存储比父节点小的值，在右侧节点存储比父节点大（或者等于）的值
  */
-class BinarySearchTree extends TreeMethods {
+class BinarySearchTree extends TreeMethods2 {
   root = null;
   // 创建新的节点
   insert(key) {
@@ -373,4 +409,7 @@ tree.insert(21);
 tree.insert(24);
 tree.insert(57);
 console.log(tree);
-console.log(tree.levelOrder());
+console.log(tree.levelOrder(), '层级遍历');
+console.log(tree.preorderRec(), '前序遍历');
+console.log(tree.inorderRec(), '中序遍历');
+console.log(tree.postorderRec(), '后序遍历');

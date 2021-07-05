@@ -275,3 +275,102 @@ console.log(
     .filter((it) => it.isPrime)
     .map((it) => it.num)
 );
+
+/**
+ * 二叉树
+ */
+
+/**
+ * 节点类
+ */
+class Node {
+  constructor(key) {
+    this.key = key;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+/**
+ * 二叉树的一些方法
+ */
+class TreeMethods {
+  // 层次遍历 按照 从上到下 -> 从左到右 顺序，对二叉树的各个节点进行访问
+  levelOrder(node = this.root) {
+    // 遍历结果集合
+    let res = [];
+    // 遍历的节点队列
+    let queue = [];
+    // 当前查找的节点
+    let currentNode = node;
+    // 将根节点加入队列
+    queue.unshift(node);
+
+    while (queue.length) {
+      // 设置当前节点 并把队列shift出队列
+      currentNode = queue.shift();
+      // 将当前节点的值加入结果集
+      res.push(currentNode.key);
+      // 先从左节点开始
+      if (currentNode.left !== null) {
+        // 将左节点塞入队列
+        queue.push(currentNode.left);
+      }
+      if (currentNode.right !== null) {
+        queue.push(currentNode.right);
+      }
+    }
+    return res;
+  }
+  // 前序遍历 先根结点 - 左子树 - 右子树
+  preOrderRec(node = this.root) {}
+}
+
+/**
+ *
+ * BST基类 二叉搜索树（BST）。它是二叉树的一种，但是只允许你在左侧节点存储比父节点小的值，在右侧节点存储比父节点大（或者等于）的值
+ */
+class BinarySearchTree extends TreeMethods {
+  root = null;
+  // 创建新的节点
+  insert(key) {
+    // 创建根节点
+    let newNode = new Node(key);
+    if (this.root === null) {
+      this.root = newNode;
+    } else {
+      this.insertNode(this.root, newNode);
+    }
+  }
+  // 插入节点
+  insertNode(node, newNode) {
+    if (newNode.key < node.key) {
+      if (node.left === null) {
+        node.left = newNode;
+      } else {
+        this.insertNode(node.left, newNode);
+      }
+    } else {
+      if (node.right === null) {
+        node.right = newNode;
+      } else {
+        this.insertNode(node.right, newNode);
+      }
+    }
+  }
+}
+
+let tree = new BinarySearchTree();
+tree.insert(20);
+tree.insert(13);
+tree.insert(7);
+tree.insert(9);
+tree.insert(15);
+tree.insert(14);
+tree.insert(42);
+tree.insert(22);
+tree.insert(21);
+tree.insert(24);
+tree.insert(57);
+console.log(tree);
+console.log(tree.levelOrder());
